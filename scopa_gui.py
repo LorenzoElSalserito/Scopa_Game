@@ -719,8 +719,26 @@ class ScopaGUI(object):
         return msg
 
 
+def _imposta_icona(root):
+    import os
+    candidati = (
+        '/usr/share/icons/hicolor/1080x1080/apps/scopa-game.png',
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Icon.png'),
+    )
+    for percorso in candidati:
+        if os.path.isfile(percorso):
+            try:
+                img = tk.PhotoImage(file=percorso)
+                root.iconphoto(True, img)
+                root._icona_app = img  # evita garbage collection
+                return
+            except tk.TclError:
+                continue
+
+
 def main():
     root = tk.Tk()
+    _imposta_icona(root)
     ScopaGUI(root)
     root.mainloop()
 
